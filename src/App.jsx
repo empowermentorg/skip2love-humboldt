@@ -10,7 +10,7 @@ import './index.css';
 
 // 🔐 Supabase credentials
 const supabaseUrl = 'https://efpeuaqgijrbxvlbjgga.supabase.co';
-const supabaseKey = 'YOUR_ACTUAL_ANON_KEY';
+const supabaseKey = 'YOUR_ACTUAL_ANON_KEY'; // Replace this with your anon key securely
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function Skip2LoveApp() {
@@ -23,18 +23,33 @@ export default function Skip2LoveApp() {
   useEffect(() => {
     checkAuth();
     loadProfiles();
+
+    // Optional: Subscribe to auth changes to update UI
+    const { data: authListener } = supabase.auth.onAuthStateChange(() => {
+      checkAuth();
+      loadProfiles();
+    });
+    return () => {
+      authListener?.unsubscribe();
+    };
   }, []);
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
       setUser(session.user);
+      // Replace with your admin email
       if (session.user.email === 'admin123@gmail.com') {
         setIsAdmin(true);
         setCurrentPage('admin');
       } else {
+        setIsAdmin(false);
         setCurrentPage('dashboard');
       }
+    } else {
+      setUser(null);
+      setIsAdmin(false);
+      setCurrentPage('welcome');
     }
     setLoading(false);
   };
@@ -70,14 +85,7 @@ export default function Skip2LoveApp() {
       case 'welcome':
         return <WelcomeScreen onGetStarted={() => setCurrentPage('auth')} />;
       case 'auth':
-        return (
-          <AuthForm
-            onSuccess={() => {
-              checkAuth();
-              loadProfiles();
-            }}
-          />
-        );
+        return <AuthForm onSuccess={() => { checkAuth(); loadProfiles(); }} />;
       case 'dashboard':
         return <Dashboard profiles={profiles} currentUser={user} />;
       case 'profile':
@@ -92,6 +100,7 @@ export default function Skip2LoveApp() {
   return (
     <div className="min-h-screen">
       {renderPage()}
+
       {user && !isAdmin && (
         <div className="navbar">
           <div
@@ -101,6 +110,7 @@ export default function Skip2LoveApp() {
             <Home className="w-6 h-6" />
             <span>Discover</span>
           </div>
+
           <div
             className={`nav-item ${currentPage === 'profile' ? 'active' : ''}`}
             onClick={() => setCurrentPage('profile')}
@@ -108,6 +118,7 @@ export default function Skip2LoveApp() {
             <User className="w-6 h-6" />
             <span>Profile</span>
           </div>
+
           <div className="nav-item" onClick={handleLogout}>
             <LogOut className="w-6 h-6" />
             <span>Logout</span>
@@ -133,9 +144,7 @@ const WelcomeScreen = ({ onGetStarted }) => (
       <button className="btn-primary w-full text-lg py-4" onClick={onGetStarted}>
         Get Started 💕
       </button>
-      <p className="text-sm text-gray-400 mt-4">
-        Join thousands of singles in your area
-      </p>
+      <p className="text-sm text-gray-400 mt-4">Join thousands of singles in your area</p>
     </div>
   </div>
 );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Crown } from 'lucide-react';
 import { supabase } from '../supabaseClient';
+import ProfilePhotoUploader from './ProfilePhotoUploader';
 
 const ProfilePage = ({ user, onUpdate }) => {
   const [profile, setProfile] = useState({
@@ -84,13 +85,19 @@ const ProfilePage = ({ user, onUpdate }) => {
         <div className="flex items-center gap-2">
           {isPremium && <Crown className="w-6 h-6 text-yellow-400" />}
           <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-            isPremium 
-              ? 'bg-yellow-500 text-black' 
+            isPremium
+              ? 'bg-yellow-500 text-black'
               : 'bg-gray-600 text-white'
           }`}>
             {isPremium ? 'Premium' : 'Free'}
           </span>
         </div>
+      </div>
+
+      {/* 🔼 Uploader Card */}
+      <div className="card mb-6">
+        <h3 className="text-xl font-bold mb-4">Upload Profile Photo</h3>
+        <ProfilePhotoUploader />
       </div>
 
       <div className="card mb-6">
