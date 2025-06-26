@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌈 Extra custom styles */
+body {
+  @apply bg-gray-800 text-white;
+  font-family: system-ui, sans-serif;
+}
+
+/* Gradient text used in headings */
+.gradient-text {
+  background: linear-gradient(to right, #f472b6, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Reusable button styles */
+.btn-primary {
+  @apply bg-pink-400 text-black font-bold py-2 px-4 rounded-lg hover:bg-pink-500 transition;
+}
+
+.btn-secondary {
+  @apply bg-gray-600 text-white px-4 rounded-lg hover:bg-gray-700 transition;
+}
+
+/* Input styles */
+.input {
+  @apply w-full px-4 py-2 mb-4 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400;
+}
+
+/* Card style */
+.card {
+  @apply bg-gray-700 p-4 rounded-lg shadow-md;
+}
+
+/* Navigation bar */
+.navbar {
+  @apply fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-600 flex justify-around items-center py-3;
+}
+
+.nav-item {
+  @apply flex flex-col items-center text-gray-400 cursor-pointer;
+}
+
+.nav-item.active {
+  @apply text-pink-400;
+}
+
+/* Profile photos */
+.photo-grid-free {
+  @apply grid grid-cols-2 gap-2 mb-2;
+}
+
+.photo-grid-premium {
+  @apply grid grid-cols-3 gap-2 mb-2;
+}
+
+.photo-slot {
+  @apply bg-gray-600 w-full aspect-square flex items-center justify-center rounded-lg overflow-hidden;
+}
+
+.photo-slot img {
+  @apply w-full h-full object-cover;
+}
+
+/* Premium badge */
+.premium-badge {
+  @apply absolute top-2 right-2 bg-yellow-400 text-black p-1 rounded-full shadow;
+}
+
+/* Upgrade callout */
+.contact-unlock {
+  @apply bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-bold hover:bg-yellow-400;
+}
